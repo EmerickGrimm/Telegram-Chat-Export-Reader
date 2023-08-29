@@ -36,6 +36,7 @@
             authorLabel = new System.Windows.Forms.Label();
             messageText = new System.Windows.Forms.Label();
             mainPanel = new System.Windows.Forms.Panel();
+            linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)profilePicture).BeginInit();
             message.SuspendLayout();
             mainPanel.SuspendLayout();
@@ -128,12 +129,26 @@
             mainPanel.TabIndex = 3;
             mainPanel.Paint += mainPanel_Paint;
             // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            linkLabel1.LinkColor = System.Drawing.SystemColors.GradientActiveCaption;
+            linkLabel1.Location = new System.Drawing.Point(31, 16);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new System.Drawing.Size(201, 15);
+            linkLabel1.TabIndex = 4;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "About | Report Bug | Feature Request";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
             // Main
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(14, 22, 33);
             ClientSize = new System.Drawing.Size(976, 719);
+            Controls.Add(linkLabel1);
             Controls.Add(mainPanel);
             Controls.Add(textBox1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -142,6 +157,7 @@
             Name = "Main";
             Text = "Main";
             FormClosing += Main_FormClosing;
+            Load += Main_Load_1;
             ((System.ComponentModel.ISupportInitialize)profilePicture).EndInit();
             message.ResumeLayout(false);
             message.PerformLayout();
@@ -160,5 +176,6 @@
         private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.Label messageDate;
         private System.Windows.Forms.Label authorLabel;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

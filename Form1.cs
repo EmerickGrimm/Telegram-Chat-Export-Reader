@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,6 +25,25 @@ namespace telegramExportReader
         {
             processingProgress.Visible = false;
             buttonsPanel.Visible = true;
+
+            Version currentVersion = new Version(Application.ProductVersion);
+            if (CheckForUpdate())
+            {
+                DialogResult dialogResult = MessageBox.Show("A new version is available. Do you want to download it?", "Update Available", MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    openLink("https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/releases");
+                }
+                else
+                {
+                    
+                }
+            }
+
+            // To Fix: Can't load image from resources.
+            //pictureBox1.Image = Properties.Resources.appIco_PNG;
+
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -154,10 +175,58 @@ namespace telegramExportReader
 
         private void openChat()
         {
-            this.Hide(); 
+            this.Hide();
 
             Main mainForm = new Main();
-            mainForm.Show(); 
+            mainForm.Show();
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            About aboutWindow = new About();
+            aboutWindow.Show();
+        }
+        private bool CheckForUpdate()
+        {
+            try
+            {
+                string latestReleaseUrl = "https://api.github.com/repos/EmerickGrimm/Telegram-Chat-Export-Reader/releases/latest";
+                WebClient client = new WebClient();
+                client.Headers.Add("User-Agent", "telegramExportReaderClient"); // GitHub API требует User-Agent заголовок
+
+                string response = client.DownloadString(latestReleaseUrl);
+                dynamic releaseInfo = JsonConvert.DeserializeObject(response);
+
+                string latestVersion = releaseInfo.tag_name;
+                Version currentVersion = new Version(Application.ProductVersion);
+
+                if (Version.TryParse(latestVersion, out Version newVersion))
+                {
+                    if (newVersion > currentVersion)
+                    {
+                        return true; // Есть новая версия
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Обработка ошибки
+            }
+
+            return false;
+        }
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openLink(string target)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = target,
+                UseShellExecute = true
+            });
         }
     }
 }

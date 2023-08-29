@@ -3,6 +3,8 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <PublishUrl>publish\</PublishUrl>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -24,11 +26,18 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>appIco.ico</ApplicationIcon>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <StartupObject>telegramExportReader.Program</StartupObject>
+    <Copyright>Emerick Grimm</Copyright>
+    <PackageProjectUrl>https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <ApplicationIcon>appIco.ico</ApplicationIcon>
+    <Version>1.0.0.1</Version>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="assets\ppPlaceholder.png" />
@@ -53,5 +62,11 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 </Project>

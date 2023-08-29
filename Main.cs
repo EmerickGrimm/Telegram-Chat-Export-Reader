@@ -34,7 +34,6 @@ namespace telegramExportReader
             mainPanel.MouseWheel += MainPanel_MouseWheel;
             await LoadInitialMessagesAsync();
 
-
             textBox1.KeyDown += textBox1_KeyDown;
         }
 
@@ -337,6 +336,17 @@ namespace telegramExportReader
         private void mainPanel_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void Main_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            About aboutWindow = new About();
+            aboutWindow.ShowDialog();
         }
     }
 }
