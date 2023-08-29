@@ -21,7 +21,7 @@ The tool helps to read exported messages from Telegram in a comfortable way.
 
 If you want to contribute to the project, you can [create Pull Request](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/pulls) or [create Issue](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/issues) to discuss new features and bugs.
 
-## Лицензия
+## License
 
 This project is licensed under [MIT](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/blob/master/LICENSE.txt).
 
