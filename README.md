@@ -4,10 +4,15 @@ The tool helps to read exported messages from Telegram in a comfortable way.
 
 ## Installation 💾
 
-	
+Go to [packages](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/releases), and download last avaiilable version.	
 
 ## Usage 
 
+1. Export Telegram chat history
+2. Open telegramExportReader.exe
+3. Press "Select a Folder"
+4. Choose folder with exported chat
+5. Enjoy.
 
 ## To-do ✨
 
