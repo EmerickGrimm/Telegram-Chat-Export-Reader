@@ -1,35 +1,43 @@
-﻿# Telegram Export Reader 
+# Telegram Chat Viewer
 
-The tool helps to read exported messages from Telegram in a comfortable way. 
+A lightweight React app to view Telegram HTML exports locally, with rich formatting, media browsing, and a Telegram-like UI.
 
-## Installation 💾
+Features
+- Renders Telegram message exports (`messages.html` / `messages1.html`) with formatting (bold, italic, code blocks, spoilers, blockquotes).
+- Media handling: photos, videos, GIFs, stickers, animations, files, locations, contacts and voice messages.
+- Global media viewer with keyboard navigation and a counter (X / Y).
+- Inline round-video playback and Telegram-style audio waveform for voice messages.
+- Quote (reply) preview: shows the actual quoted message content when available.
 
-Go to [packages](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/releases), and download last avaiilable version.	
+Quick start
 
-## Usage 
+1. Install dependencies
 
-1. Export Telegram chat history
-2. Open telegramExportReader.exe
-3. Press "Select a Folder"
-4. Choose folder with exported chat
-5. Enjoy.
+```powershell
+npm install
+```
 
-## To-do ✨
+2. Start dev server
 
-- [✅] Search 🔎
-- [✅] Stickers support 👌
-- [ ] Support for other media 
-- [ ] Filter by date
-- [ ] Design
+```powershell
+npm run dev
+```
 
-## Contribute
+Open the local server URL printed by Vite (usually http://localhost:3000) in your browser.
 
-If you want to contribute to the project, you can [create Pull Request](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/pulls) or [create Issue](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/issues) to discuss new features and bugs.
+How to use
+- Export a chat from Telegram (HTML export). Place the exported folder somewhere accessible.
+- In the app: choose the exported folder (the app reads `messages.html` or `messages1.html` and associated media files).
+- Click media thumbnails to open the global viewer. Use left/right arrow keys or on-screen chevrons to navigate.
+- Play voice messages inline (Telegram-style waveform UI).
 
-## License
+Developer notes
+- Built with React + Vite, Tailwind CSS, and highlight.js for syntax highlighting.
+- Parser logic is in `src/utils/parser.js` and returns message objects used by the renderer.
+- If you run into dev-server errors, try removing `node_modules` and re-running `npm install`.
 
-This project is licensed under [MIT](https://github.com/EmerickGrimm/Telegram-Chat-Export-Reader/blob/master/LICENSE.txt).
+Contributing
+- PRs are welcome. Please follow existing code style and run the dev server locally to test changes.
 
----
-Author: Emerick Grimm
-Icon by a [Anu Rocks](https://freeicons.io/profile/730) on [freeicons.io](https://freeicons.io)
+License
+- MIT
