@@ -10,16 +10,22 @@ A lightweight React app to view Telegram HTML exports locally, with rich formatt
 
 - **Rich Message Rendering**: Renders Telegram message exports (`messages.html` / `messages1.html`) with full formatting support (bold, italic, code blocks, spoilers, blockquotes)
 - **Comprehensive Media Handling**: Photos, videos, GIFs, stickers, animations, files, locations, contacts, and voice messages
+
 ![Media Viewer](./screenshots/pretty2.png)
+
 - **Global Media Viewer**: Fullscreen media browser with keyboard navigation and counter (X / Y)
 - **Inline Playback**: Round-video playback and Telegram-style audio waveform for voice messages
+
 ![Media Viewer](./screenshots/pretty.png)
+
 - **Quote Preview**: Shows the actual quoted message content when available
 
 ![Media Viewer](./screenshots/mediaview.png)
+
 - *Navigate through photos and videos with keyboard shortcuts*
 
 ![Voice Messages](./screenshots/atts.png)
+
 - *Play voice messages with the familiar Telegram waveform interface*
 
 ## Quick Start
