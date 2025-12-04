@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && git add dist -f && git commit -m 'Deploy to GitHub Pages' && git push origin gh-pages"
   },
   "dependencies": {
     "highlight.js": "^11.11.1",
