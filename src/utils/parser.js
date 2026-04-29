@@ -83,13 +83,16 @@ export const parseMessage = async (messageDiv, allFiles, basePath) => {
       const tgsPath = getRelativePath(href, basePath);
       const thumbPath = tgsPath.replace('.tgs', '.tgs_thumb');
       const thumbUrl = await findFileInFolder(allFiles, thumbPath);
+      const tgsUrl = await findFileInFolder(allFiles, tgsPath);
       
       // Only add if we have a thumbnail or emoji
-      if (thumbUrl || emoji) {
+      if (thumbUrl || emoji || tgsUrl) {
         media.push({ 
           type: 'animated_sticker', 
           thumb: thumbUrl,
-          emoji: emoji || '🎨' 
+          url: tgsUrl,
+          emoji: emoji || '🎨',
+          isTgs: tgsPath.endsWith('.tgs')  // Flag to identify TGS files
         });
       }
     }

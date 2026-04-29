@@ -1,5 +1,7 @@
-import React, { memo, useState, useRef } from 'react';
+import React, { memo, useState, useRef, useEffect } from 'react';
 import { File, MapPin, User, Smile, Phone, PhoneOff, Play } from 'lucide-react';
+import Lottie from 'lottie-react';
+import pako from 'pako';
 import MediaViewer from './MediaViewer';
 import AudioMessage from './AudioMessage';
 
@@ -87,9 +89,47 @@ const MediaItem = memo(({ item, mediaIndex = 0, totalMedia = 1, allMedia = [], o
   }
 
   if (item.type === 'animated_sticker') {
+    const [animationData, setAnimationData] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+      if (item.url && item.isTgs) {
+        fetch(item.url)
+          .then(res => res.arrayBuffer())
+          .then(buffer => {
+            try {
+              // TGS is gzip-compressed JSON, decompress with pako
+              const decompressed = pako.inflate(new Uint8Array(buffer), { to: 'string' });
+              setAnimationData(JSON.parse(decompressed));
+            } catch (e) {
+              // Fallback: try parsing as raw JSON
+              try {
+                const text = new TextDecoder().decode(buffer);
+                setAnimationData(JSON.parse(text));
+              } catch (e2) {
+                console.warn('Failed to parse TGS:', e2);
+              }
+            }
+            setIsLoaded(true);
+          })
+          .catch(err => {
+            console.warn('Failed to load TGS:', err);
+            setIsLoaded(true);
+          });
+      } else {
+        setIsLoaded(true);
+      }
+    }, [item.url, item.isTgs]);
+
     return (
       <div className="relative w-48 h-48 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl flex items-center justify-center shadow hover:shadow-md transition">
-        {item.thumb ? (
+        {item.isTgs && animationData ? (
+          <Lottie 
+            animationData={animationData} 
+            loop={true}
+            className="w-44 h-44"
+          />
+        ) : item.thumb ? (
           <img 
             src={item.thumb} 
             alt="animated sticker" 
@@ -99,10 +139,6 @@ const MediaItem = memo(({ item, mediaIndex = 0, totalMedia = 1, allMedia = [], o
         ) : (
           <span className="text-6xl">{item.emoji}</span>
         )}
-        <div className="absolute bottom-2 right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg">
-          <Smile className="w-3 h-3" />
-          <span className="font-semibold">Animated</span>
-        </div>
       </div>
     );
   }

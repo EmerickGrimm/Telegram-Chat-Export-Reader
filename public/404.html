@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Chat Viewer</title>
+  <script>
+    // Handle SPA routing for GitHub Pages
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    const baseIndex = pathSegments.indexOf('Telegram-Chat-Export-Reader');
+    
+    if (baseIndex !== -1) {
+      // Redirect to index.html with hash-based routing
+      const path = '/' + pathSegments.slice(0, baseIndex + 1).join('/') + '/';
+      location.replace(path);
+    }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./src/main.jsx"></script>
+</body>
+</html>

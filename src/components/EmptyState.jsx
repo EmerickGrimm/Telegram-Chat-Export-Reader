@@ -1,5 +1,5 @@
 import React from 'react';
-import { Send, FolderOpen } from 'lucide-react';
+import { Send, FolderOpen, Shield } from 'lucide-react';
 
 const EmptyState = ({ onLoadClick, loading, progress }) => {
   if (loading) {
@@ -38,6 +38,16 @@ const EmptyState = ({ onLoadClick, loading, progress }) => {
         <FolderOpen className="w-5 h-5" />
         Load Telegram Export
       </button>
+      
+      <div className="mt-12 pt-8 border-t border-gray-200">
+        <div className="inline-flex items-start gap-3 text-left bg-green-50 p-4 rounded-lg max-w-md">
+          <Shield className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-green-900">100% Private & Local</p>
+            <p className="text-sm text-green-700 mt-1">All processing happens in your browser. Your data is never uploaded or stored anywhere.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
