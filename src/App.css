@@ -63,3 +63,115 @@ body {
   background-size: contain;
   vertical-align: middle;
 }
+
+/* Dark mode overrides */
+.app-shell {
+  min-height: 100vh;
+}
+.dark .app-shell {
+  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.15), transparent 18%),
+    linear-gradient(135deg, #020617 0%, #111827 100%);
+}
+.dark body {
+  color: #e2e8f0;
+  background-color: #020617;
+}
+.dark .bg-white {
+  background-color: #111827 !important;
+}
+.dark .bg-gray-50 {
+  background-color: #0f172a !important;
+}
+.dark .bg-gray-100 {
+  background-color: #111827 !important;
+}
+.dark .bg-blue-50 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+}
+.dark .bg-green-50 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+.dark .bg-amber-50 {
+  background-color: rgba(251, 191, 36, 0.12) !important;
+}
+.dark .bg-blue-100 {
+  background-color: rgba(219, 234, 254, 0.12) !important;
+}
+.dark .bg-purple-100 {
+  background-color: rgba(237, 233, 254, 0.12) !important;
+}
+.dark .bg-green-100 {
+  background-color: rgba(220, 252, 231, 0.12) !important;
+}
+.dark .bg-yellow-100 {
+  background-color: rgba(254, 243, 199, 0.12) !important;
+}
+.dark .bg-pink-100 {
+  background-color: rgba(251, 207, 232, 0.12) !important;
+}
+.dark .border-gray-200 {
+  border-color: rgba(148, 163, 184, 0.18) !important;
+}
+.dark .border-blue-400 {
+  border-color: rgba(96, 165, 250, 0.45) !important;
+}
+.dark .border-amber-400 {
+  border-color: rgba(251, 191, 36, 0.45) !important;
+}
+.dark .text-gray-900 {
+  color: #e2e8f0 !important;
+}
+.dark .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+.dark .text-gray-600 {
+  color: #94a3b8 !important;
+}
+.dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+.dark .text-gray-400 {
+  color: #cbd5e1 !important;
+}
+.dark .text-blue-900 {
+  color: #bfdbfe !important;
+}
+.dark .text-amber-900 {
+  color: #fde68a !important;
+}
+.dark .text-blue-700 {
+  color: #93c5fd !important;
+}
+.dark .text-purple-700 {
+  color: #ddd6fe !important;
+}
+.dark .text-green-700 {
+  color: #86efac !important;
+}
+.dark .text-yellow-700 {
+  color: #fef08a !important;
+}
+.dark .text-pink-700 {
+  color: #f9a8d4 !important;
+}
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.35) !important;
+}
+.dark .shadow {
+  box-shadow: 0 10px 15px rgba(15, 23, 42, 0.23) !important;
+}
+.dark .hover\:bg-white:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+.dark .hover\:bg-gray-100:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+.dark .bg-blue-500 {
+  background-color: #2563eb !important;
+}
+.dark .bg-blue-600 {
+  background-color: #1d4ed8 !important;
+}
+.dark .text-white {
+  color: #f8fafc !important;
+}

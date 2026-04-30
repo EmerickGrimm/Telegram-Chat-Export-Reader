@@ -54,7 +54,7 @@ Open the local server URL printed by Vite (usually `http://localhost:3000`) in y
 
 - [ ] Search through chat history by message content, sender, or date
 - [ ] Enhanced filtering options
-- [ ] Dark/light theme toggle
+- [x] ~~Dark/light theme toggle~~
 
 ## Contributing
 

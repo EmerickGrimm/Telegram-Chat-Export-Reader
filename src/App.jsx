@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ChatHeader from './components/ChatHeader';
 import MessageList from './components/MessageList';
 import EmptyState from './components/EmptyState';
@@ -10,7 +10,18 @@ const App = () => {
   const [chatTitle, setChatTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') === 'dark';
+    }
+    return false;
+  });
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode);
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
 
   const handleFolderSelect = async (e) => {
     const files = Array.from(e.target.files);
@@ -84,9 +95,11 @@ const App = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
+    <div className="h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col app-shell">
       <ChatHeader 
         chatTitle={chatTitle} 
+        isDarkMode={darkMode}
+        onToggleDarkMode={() => setDarkMode(prevMode => !prevMode)}
         onLoadClick={() => fileInputRef.current?.click()} 
       />
 

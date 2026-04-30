@@ -4,6 +4,7 @@ import MediaViewer from './MediaViewer';
 
 const ESTIMATED_HEIGHT = 160;
 const BUFFER_SIZE = 8;
+const BOTTOM_SPACER = 120;
 
 const MessageList = ({ messages }) => {
   const containerRef = useRef(null);
@@ -64,9 +65,12 @@ const MessageList = ({ messages }) => {
   }, []);
 
   const handleScroll = useCallback(() => {
-    if (containerRef.current) {
-      setScrollTop(containerRef.current.scrollTop);
-    }
+    const container = containerRef.current;
+    if (!container) return;
+
+    const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
+    const nextScrollTop = Math.min(container.scrollTop, maxScrollTop);
+    setScrollTop(nextScrollTop);
   }, []);
 
   const setItemHeight = useCallback((index, height) => {
@@ -128,7 +132,7 @@ const MessageList = ({ messages }) => {
   // Calculate total height
   const totalHeight = messages.reduce((sum, _, index) => {
     return sum + getItemHeight(index);
-  }, 0);
+  }, 0) + BOTTOM_SPACER;
 
   // Make sure we don't slice beyond array bounds
   const safeStartIndex = Math.max(0, Math.min(startIndex, messages.length - 1));
@@ -139,7 +143,7 @@ const MessageList = ({ messages }) => {
   return (
     <div 
       ref={containerRef}
-      className="flex-1 overflow-y-auto bg-white"
+      className="flex-1 overflow-y-auto overscroll-y-contain bg-white pb-20"
       onScroll={handleScroll}
     >
       {globalViewerOpen && globalMedia[globalIndex] && (
