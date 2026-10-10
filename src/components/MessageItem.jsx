@@ -45,7 +45,7 @@ const MessageItem = memo(({ message, index, onHeightChange, onOpenGlobalMedia })
   const isJoinedMessage = !message.from || !message.initials;
 
   return (
-    <div ref={itemRef} className="mb-4 flex gap-2">
+    <div ref={itemRef} className={`mb-4 flex gap-2 ${message.joined ? 'pl-10' : ''}`}>
       {/* Avatar - only show if not a joined message */}
       {!isJoinedMessage && (
         <div

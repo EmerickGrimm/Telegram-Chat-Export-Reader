@@ -151,7 +151,7 @@ const MediaViewer = ({ item, onClose, onNext, onPrev, hasNext, hasPrev, currentI
           />
         )}
 
-        {(item.type === 'video' || item.type === 'animation' || item.type === 'gif' || item.type === 'round_video' || item.type === 'video_sticker') && (
+        {(item.type === 'video' || item.type === 'animation' || item.type === 'gif' || item.type === 'round_video') && (
           <div 
             className="relative flex items-center justify-center w-full h-full"
             onClick={(e) => e.stopPropagation()}
@@ -165,9 +165,9 @@ const MediaViewer = ({ item, onClose, onNext, onPrev, hasNext, hasPrev, currentI
             <video
               ref={videoRef}
               src={item.url}
-              autoPlay={item.type === 'video' || item.type === 'animation' || item.type === 'gif' || item.type === 'round_video' || item.type === 'video_sticker'}
-              loop={item.type === 'animation' || item.type === 'gif' || item.type === 'video_sticker'}
-              muted={item.type === 'animation' || item.type === 'gif' || item.type === 'video_sticker' || isMuted}
+              autoPlay={item.type === 'video' || item.type === 'animation' || item.type === 'gif' || item.type === 'round_video'}
+              loop={item.type === 'animation' || item.type === 'gif'}
+              muted={item.type === 'animation' || item.type === 'gif' || isMuted}
               className="max-w-full max-h-full w-auto h-auto object-contain"
               style={{
                 transition: 'transform 240ms ease',

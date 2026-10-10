@@ -56,7 +56,7 @@ export const parseJsonExport = async (data, files) => {
           if (source.mime_type === 'application/x-tgsticker') {
             media.push({ type: 'animated_sticker', url, thumb, emoji: source.sticker_emoji || '🎨', isTgs: true });
           } else if (/\.webm$/i.test(mainFile)) {
-            media.push({ type: 'video_sticker', url, thumb, emoji: source.sticker_emoji || '' });
+            media.push({ type: 'sticker', url, thumb, emoji: source.sticker_emoji || '', isVideo: true });
           } else {
             media.push({ type: 'sticker', url, thumb, emoji: source.sticker_emoji });
           }
@@ -171,21 +171,25 @@ export const parseMessage = async (messageDiv, allFiles, basePath) => {
     const href = sticker.getAttribute('href');
     
     if (title === 'Sticker' && href) {
-      // Look for thumbnail
-      const tgsPath = getRelativePath(href, basePath);
-      const thumbPath = tgsPath.replace('.tgs', '.tgs_thumb');
+      const stickerPath = getRelativePath(href, basePath);
+      const thumbPath = `${stickerPath}_thumb.jpg`;
       const thumbUrl = await findFileInFolder(allFiles, thumbPath);
-      const tgsUrl = await findFileInFolder(allFiles, tgsPath);
-      
-      // Only add if we have a thumbnail or emoji
-      if (thumbUrl || emoji || tgsUrl) {
-        media.push({ 
-          type: 'animated_sticker', 
-          thumb: thumbUrl,
-          url: tgsUrl,
-          emoji: emoji || '🎨',
-          isTgs: tgsPath.endsWith('.tgs')  // Flag to identify TGS files
-        });
+      const stickerUrl = await findFileInFolder(allFiles, stickerPath);
+
+      if (/\.webm$/i.test(href)) {
+        if (stickerUrl || thumbUrl) {
+          media.push({ type: 'sticker', url: stickerUrl, thumb: thumbUrl, emoji: emoji || '', isVideo: true });
+        }
+      } else if (/\.tgs$/i.test(href)) {
+        if (thumbUrl || emoji || stickerUrl) {
+          media.push({
+            type: 'animated_sticker',
+            thumb: thumbUrl,
+            url: stickerUrl,
+            emoji: emoji || '🎨',
+            isTgs: true
+          });
+        }
       }
     }
   }
@@ -334,6 +338,7 @@ export const parseMessage = async (messageDiv, allFiles, basePath) => {
   return {
     id,
     type: 'message',
+    joined: messageDiv.classList.contains('joined'),
     from: fromName,
     time,
     text,

@@ -72,6 +72,26 @@ const MediaItem = memo(({ item, mediaIndex = 0, totalMedia = 1, allMedia = [], o
   }
 
   if (item.type === 'sticker') {
+    if (item.isVideo) {
+      return (
+        <div
+          className="relative w-40 h-40 flex items-center justify-center rounded-2xl"
+          title={item.emoji ? `Sticker ${item.emoji}` : 'Animated sticker'}
+        >
+          <video
+            src={item.url}
+            poster={item.thumb}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="max-w-full max-h-full object-contain"
+            preload="metadata"
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="flex items-center justify-center w-40 h-40 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow hover:shadow-md transition">
         {item.url && item.url.endsWith('.tgs') ? (
@@ -84,27 +104,6 @@ const MediaItem = memo(({ item, mediaIndex = 0, totalMedia = 1, allMedia = [], o
         ) : (
           <span className="text-5xl">{item.emoji}</span>
         )}
-      </div>
-    );
-  }
-
-  if (item.type === 'video_sticker') {
-    return (
-      <div
-        className="relative w-40 h-40 flex items-center justify-center rounded-2xl hover:bg-gray-100 transition cursor-pointer"
-        onClick={handleOpenMedia}
-        title={item.emoji ? `Sticker ${item.emoji}` : 'Animated sticker'}
-      >
-        <video
-          src={item.url}
-          poster={item.thumb}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="max-w-full max-h-full object-contain"
-          preload="metadata"
-        />
       </div>
     );
   }
