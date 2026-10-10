@@ -3,7 +3,7 @@ import ChatHeader from './components/ChatHeader';
 import MessageList from './components/MessageList';
 import EmptyState from './components/EmptyState';
 import { parseHTML } from './utils/fileHandler';
-import { parseMessage } from './utils/parser';
+import { parseMessage, parseJsonExport } from './utils/parser';
 
 const App = () => {
   const [messages, setMessages] = useState([]);
@@ -34,14 +34,31 @@ const App = () => {
     const firstPath = files[0].webkitRelativePath;
     const basePath = firstPath.split('/')[0];
 
+    const jsonFile = files.find(f => f.name.toLowerCase() === 'result.json' || f.name.toLowerCase().endsWith('.json'));
     const htmlFile = files.find(f => 
       f.webkitRelativePath.endsWith('messages.html') || 
       f.webkitRelativePath.endsWith('messages1.html')
     );
 
-    if (!htmlFile) {
-      alert('No messages.html file found in the selected folder');
+    if (!htmlFile && !jsonFile) {
+      alert('No messages.html or Telegram JSON export found in the selected folder');
       setLoading(false);
+      return;
+    }
+
+    if (jsonFile) {
+      try {
+        const data = JSON.parse(await jsonFile.text());
+        const parsed = await parseJsonExport(data, files);
+        setChatTitle(parsed.title);
+        setMessages(parsed.messages);
+      } catch (error) {
+        console.error('Failed to parse Telegram JSON export:', error);
+        alert('Could not read this JSON export. Make sure it is a Telegram chat export.');
+      } finally {
+        setLoading(false);
+        setProgress(0);
+      }
       return;
     }
 

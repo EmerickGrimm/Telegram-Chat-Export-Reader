@@ -88,6 +88,27 @@ const MediaItem = memo(({ item, mediaIndex = 0, totalMedia = 1, allMedia = [], o
     );
   }
 
+  if (item.type === 'video_sticker') {
+    return (
+      <div
+        className="relative w-40 h-40 flex items-center justify-center rounded-2xl hover:bg-gray-100 transition cursor-pointer"
+        onClick={handleOpenMedia}
+        title={item.emoji ? `Sticker ${item.emoji}` : 'Animated sticker'}
+      >
+        <video
+          src={item.url}
+          poster={item.thumb}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="max-w-full max-h-full object-contain"
+          preload="metadata"
+        />
+      </div>
+    );
+  }
+
   if (item.type === 'animated_sticker') {
     const [animationData, setAnimationData] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);

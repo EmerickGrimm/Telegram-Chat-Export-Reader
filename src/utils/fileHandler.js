@@ -5,8 +5,11 @@ export const getRelativePath = (href, basePath) => {
 };
 
 export const findFileInFolder = async (files, path) => {
+  if (!path) return null;
+  const normalizedPath = path.replace(/\\/g, '/').replace(/^\.\//, '');
   for (const file of files) {
-    if (file.webkitRelativePath === path) {
+    const relativePath = (file.webkitRelativePath || file.name).replace(/\\/g, '/');
+    if (relativePath === path || relativePath.endsWith(`/${normalizedPath}`) || relativePath === normalizedPath) {
       return URL.createObjectURL(file);
     }
   }

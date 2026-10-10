@@ -3,14 +3,15 @@ USAGE
 
 Overview
 
-This app is designed to open and display Telegram HTML exports locally. It reads the exported HTML and resolves local media files (images, videos, voice notes, stickers, files).
+This app is designed to open and display Telegram HTML and JSON exports locally. It reads the export and resolves local media files (images, videos, voice notes, stickers, files).
 
 Supported inputs
 - Telegram HTML export folder containing `messages.html` (or `messages1.html`) and media files.
+- Telegram JSON export folder containing `result.json` and its media files.
 
 Loading a chat
 1. Start the dev server (`npm run dev`) and open the app in the browser.
-2. Use the folder chooser in the app to select the exported Telegram folder (or drag the `messages.html`).
+2. Use the folder chooser in the app to select the exported Telegram folder.
 3. The app parses messages and media and populates the chat view.
 
 Key interactions

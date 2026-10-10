@@ -1,5 +1,97 @@
 import { findFileInFolder, getRelativePath } from './fileHandler';
 
+const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+
+const renderJsonText = value => {
+  if (typeof value === 'string' || typeof value === 'number') return escapeHTML(value);
+  if (!Array.isArray(value)) return '';
+  return value.map(part => {
+    if (typeof part === 'string') return escapeHTML(part);
+    if (!part || typeof part !== 'object') return '';
+    const content = renderJsonText(part.text);
+    const tags = { bold: 'strong', italic: 'em', underline: 'u', strikethrough: 's', spoiler: 'span', code: 'code' };
+    if (part.type === 'pre') return `<pre><code>${content}</code></pre>`;
+    if (part.type === 'blockquote') return `<blockquote>${content}</blockquote>`;
+    if (part.type === 'text_link' || part.type === 'link') {
+      const href = part.href || part.text;
+      const safeHref = /^(https?:|mailto:|tg:)/i.test(href || '') ? href : '#';
+      return `<a href="${escapeHTML(safeHref)}" target="_blank" rel="noreferrer">${content}</a>`;
+    }
+    const tag = tags[part.type];
+    if (tag === 'span') return `<span class="formatted-spoiler" data-hidden="${escapeHTML(part.text)}">${content}</span>`;
+    return tag ? `<${tag}>${content}</${tag}>` : content;
+  }).join('');
+};
+
+export const parseJsonExport = async (data, files) => {
+  const basePath = files.find(file => file.webkitRelativePath)?.webkitRelativePath?.split('/')[0] || '';
+  const resolvePath = path => path ? findFileInFolder(files, basePath ? `${basePath}/${path}` : path) : null;
+  const messages = await Promise.all((data.messages || []).map(async (source, index) => {
+    const text = Array.isArray(source.text)
+      ? source.text.map(part => typeof part === 'string' ? part : part?.text || '').join('')
+      : String(source.text || '');
+    const sender = source.from || source.actor || '';
+    const time = source.date ? new Date(source.date).toLocaleString() : '';
+    if (source.type === 'service') {
+      const actionText = source.action ? source.action.replace(/_/g, ' ') : '';
+      return { id: `message${source.id ?? index}`, type: 'service', text: [sender, actionText].filter(Boolean).join(' ') || text };
+    }
+
+    const media = [];
+    const mainFile = source.file || source.photo;
+    const thumb = await resolvePath(source.thumbnail);
+    const url = await resolvePath(mainFile);
+    const duration = source.duration_seconds ? `${source.duration_seconds}s` : '';
+    if (source.location_information) {
+      const { latitude, longitude } = source.location_information;
+      media.push({ type: 'location', url: `https://maps.google.com/?q=${latitude},${longitude}`, coords: `${latitude}, ${longitude}` });
+    }
+    if (source.contact_information) {
+      const contact = source.contact_information;
+      media.push({ type: 'contact', name: [contact.first_name, contact.last_name].filter(Boolean).join(' '), phone: contact.phone_number || '' });
+    }
+    if (url) {
+      switch (source.media_type) {
+        case 'sticker':
+          if (source.mime_type === 'application/x-tgsticker') {
+            media.push({ type: 'animated_sticker', url, thumb, emoji: source.sticker_emoji || '🎨', isTgs: true });
+          } else if (/\.webm$/i.test(mainFile)) {
+            media.push({ type: 'video_sticker', url, thumb, emoji: source.sticker_emoji || '' });
+          } else {
+            media.push({ type: 'sticker', url, thumb, emoji: source.sticker_emoji });
+          }
+          break;
+        case 'animation': media.push({ type: 'gif', url, thumb }); break;
+        case 'video_message': media.push({ type: 'round_video', url, thumb, duration }); break;
+        case 'video_file': media.push({ type: 'video', url, thumb, duration }); break;
+        case 'voice_message': media.push({ type: 'voice', url, duration }); break;
+        default:
+          if (source.photo) media.push({ type: 'photo', url, thumb: thumb || url });
+          else if (source.file) media.push({ type: 'file', url, title: source.file_name || source.file.split('/').pop(), size: source.file_size ? `${Math.round(source.file_size / 1024)} KB` : '' });
+      }
+    }
+
+    const replyTo = source.reply_to_message_id ? {
+      text: `Reply to message ${source.reply_to_message_id}`,
+      isAnotherChat: Boolean(source.reply_to_peer_id),
+      messageId: Number(source.reply_to_message_id)
+    } : null;
+    return {
+      id: `message${source.id ?? index}`, type: 'message', from: sender, time,
+      text, formattedHTML: renderJsonText(source.text), replyTo, media,
+      initials: sender.split(/\s+/).map(word => word[0] || '').slice(0, 2).join('').toUpperCase(), userpicClass: 'userpic1',
+      forwardedFrom: source.forwarded_from || ''
+    };
+  }));
+  const byId = new Map(messages.map(message => [message.id.replace('message', ''), message]));
+  return {
+    title: data.name || 'Chat',
+    messages: messages.map(message => message.replyTo && !message.replyTo.isAnotherChat && byId.has(String(message.replyTo.messageId))
+      ? { ...message, replyTo: { ...message.replyTo, quotedMessage: byId.get(String(message.replyTo.messageId)) } }
+      : message)
+  };
+};
+
 export const parseMessage = async (messageDiv, allFiles, basePath) => {
   const id = messageDiv.id;
   const isService = messageDiv.classList.contains('service');
